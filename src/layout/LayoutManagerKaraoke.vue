@@ -1,0 +1,32 @@
+<template>
+    <div class="wrap-manager-karaoke row">
+        <sidebar-manager :activeSidebar="activeSidebar" />
+        <div class="wrap-manager-main" :class="{active: activeSidebar}">
+            <header-tool-bar :menuManager="activeSidebar" @closeOpenSidebar="activeSidebar = $event" />
+            <router-view></router-view>
+        </div>
+        
+    </div>
+</template>
+
+<script>
+export default {
+    components: {
+        'header-tool-bar': () => import('@/components/header/ToolBar.vue'),
+        'sidebar-manager': () => import('@/components/sidebars/SidebarManager.vue')
+    },
+    data()
+    {
+        return {
+            activeSidebar: true,
+        }
+    },
+}
+</script>
+
+<style scoped>
+.siebar-manager-karaoke.active {width: 290px;}
+.wrap-manager-main.active {width: calc(100% - 290px)}
+.wrap-manager-main {width: 100%}
+.siebar-manager-karaoke {width: 0;}
+</style>
