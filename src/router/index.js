@@ -20,7 +20,7 @@ const routes = [
                 component: () => import('@/page/manager/karaoke/DashBoard.vue'),
             }
         ]
-    }
+    },
 ]
 
 export default new VueRouter({

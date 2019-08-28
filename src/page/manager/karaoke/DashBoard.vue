@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import VueApexCharts from 'vue-apexcharts'
+import VueApexCharts from 'vue-apexcharts/src/ApexCharts.component'
 
 export default {
   name: 'Chart',

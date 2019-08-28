@@ -21,6 +21,18 @@ export default {
             activeSidebar: true,
         }
     },
+    created()
+    {
+        // this.$session.destroy()
+        if(!this.$session.has('user_social'))
+        {
+            this.$router.push('../login')
+        }
+        else
+        {
+            console.log(this.$session.get('user_social'))
+        }
+    }
 }
 </script>
 

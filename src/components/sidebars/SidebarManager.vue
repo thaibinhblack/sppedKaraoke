@@ -1,19 +1,19 @@
 <template>
     <v-card class="siebar-manager-karaoke" :class="{active: activeSidebar}">
-            <v-navigation-drawer permanent width="100%"> 
+            <v-navigation-drawer permanent width="100%" v-if="$session.has('user_social')"> 
                 <v-list-item two-line="">
                     <v-list-item-avatar>
-                        <v-img :src="$session.get('user_facebook').photoURL"></v-img>
+                        <v-img :src="$session.get('user_social').photoURL != null ?  $session.get('user_social').photoURL: ''"></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title class="title">
                             <span style="font-size:14px;">
-                                {{$session.get('user_facebook').displayName}}
+                                {{$session.get('user_social').displayName != null ? $session.get('user_social').displayName : ''}}
                             </span>
                             
                         </v-list-item-title>
                         <v-list-item-subtitle>
-                            <small>{{$session.get('user_facebook').email}}</small>
+                            <small>{{$session.get('user_social').email != null ? $session.get('user_social').email : ''}}</small>
                         </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
@@ -70,7 +70,11 @@
 
 <script>
 export default {
-    props: ["activeSidebar"]
+    props: ["activeSidebar"],
+    created()
+    {
+        console.log(this.$session.get('user_social'))
+    }
 }
 </script>
 

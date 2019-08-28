@@ -7,7 +7,7 @@
                 <v-col cols="12" md=6 class="form-login">
                     <div class="form-group-login">
                         <v-btn class="btn-social btn-facebook" @click="loginFacebook()"><v-icon class="icon-social">mdi-facebook</v-icon> Đăng nhập bằng Facebook</v-btn>
-                        <login-google />
+                        <v-btn class="btn-social btn-google" @click="loginGoogle()"><v-icon class="icon-social">mdi-google-plus</v-icon> Đăng nhập bằng Google</v-btn>
                         <div class="or">
                             <span>Hoặc</span>
                             {{token}}
@@ -46,8 +46,7 @@ import Vue from 'vue'
 import { async } from 'q';
 export default {
     components:{
-        'header-tool-bar': () => import('@/components/header/ToolBar.vue'),
-        'login-google': () => import('@/components/social/Google.vue')
+        'header-tool-bar': () => import('@/components/header/ToolBar.vue')
     },
     data()
     {
@@ -89,19 +88,55 @@ export default {
             await this.$session.start()
             if(token != '' && user != '')
             {
-                this.$session.set('token_facebook',token)
-                this.$session.set('user_facebook',user)
+                this.$session.set('token_social',token)
+                this.$session.set('user_social',user)
                 this.$router.push('manager-karaoke/dashboard')
             }
             
         },
+        async loginGoogle()
+        {
+            var provider_google = await new firebase.auth.GoogleAuthProvider();
+            await provider_google.addScope('https://www.googleapis.com/auth/contacts.readonly');
+            firebase.auth().languageCode = await 'pt';
+            var token = await ''
+            var user = await ''
+            await provider_google.setCustomParameters({
+            'login_hint': 'thaibinhblack@gmail.com'
+            });
+            await firebase.auth().signInWithPopup(provider_google).then( async (result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            token = await result.credential.accessToken;
+            // The signed-in user info.
+            user = await result.user;
+            await console.log('google 1',user)
+            // ...
+            }).catch(function(error) {
+            // Handle Errors here.
+            // var errorCode = error.code;
+            // var errorMessage = error.message;
+            // // The email of the user's account used.
+            // var email = error.email;
+            // // The firebase.auth.AuthCredential type that was used.
+            // var credential = error.credential;
+            // ...
+            });
+           
+            await console.log('google',user)
+            if(token != '' && user != '')
+            {
+                this.$session.set('token_social',token)
+                this.$session.set('user_social',user)
+                this.$router.push('./manager-karaoke/dashboard')
+            } 
+        }
         
     },
     created()
     {
         
         console.log(this.$session.get('token'))
-        if(this.$session.has('token_facebook') || this.$session.has('user_facebook'))
+        if(this.$session.has('token_social') || this.$session.has('user_social'))
         {
             console.log(this.$session.get('toen_facebook'))
             this.$router.push('manager-karaoke/dashboard')
@@ -109,7 +144,7 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style  scoped>
 #page-login-resignter {background: #fff;}
 .form-login {margin: auto}
 .text-logo {color: #333;}
@@ -117,9 +152,9 @@ export default {
 .form-group-login .btn-social {width: 100%;}
 .btn-facebook {background-color: #3d5a98 !important;border: 1px solid #3d5a98;color: #fff;}
 .btn-google {background-color: #ea4335 !important;border: 1px solid #ea4335;}
-.btn-facebook:hover,.btn-google:hover {background-color: #fff !important;color: #3d5a98;}
-.btn-google:hover {color: #ea4335}
-.btn-social {height: 45px;margin: 10px 0;color: #fff;}
+.btn-facebook:hover,.btn-google:hover {background-color: #fff !important;color: #3d5a98 !important;}
+.btn-google:hover {color: #ea4335 !important}
+.btn-social {height: 45px;margin: 10px 0;color: #fff !important;}
 .icon-social {float: left;}
 .or {    border-bottom: 1px solid #dedede;width: 90%;margin: 0 auto 30px; text-align: center}
 .or span {    position: relative;top: 12px; padding: 0 25px;background: #fff;}

@@ -5,9 +5,20 @@ import Vuetify, {
   VToolbar,
   VContainer,
   VRow,
-  VCol,
   VFlex,
   VDivider,
+  VList,
+  VListGroup,
+  VListItem,
+  VListItemContent,
+  VListItemIcon,
+  VListItemTitle,
+  VItemGroup,
+  VImg,
+  VIcon,
+  VAvatar,
+  VBtn,
+  VListItemAvatar,
 } from 'vuetify/lib'
 import { Ripple } from 'vuetify/lib/directives'
 import 'vuetify/dist/vuetify.min.css'
@@ -19,9 +30,23 @@ Vue.use(Vuetify, {
     VToolbar,
     VContainer,
     VRow,
-    VCol,
     VFlex,
     VDivider,
+    VList,
+    VListGroup,
+    VListItem,
+    VListItemContent,
+    VListItemIcon,
+    VListItemTitle,
+    VItemGroup,
+    VImg,
+    VIcon,
+    VAvatar,
+    VBtn,
+    VListItemAvatar
+  },
+  theme:{
+    primary: '#ea4335'
   },
   directives: {
     Ripple,
