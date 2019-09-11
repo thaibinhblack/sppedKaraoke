@@ -1,0 +1,53 @@
+<template>
+    <div id="page-setting-rule" style="padding:15px;">
+        <v-row>
+            <v-col cols="12" sm="12">
+                <span class="label-title">PHÂN QUYỀN CHO HỆ THỐNG</span>
+            </v-col>
+            <v-col cols="12" sm="4" md="3">
+                <v-card>
+                    <v-card-title primary-title>
+                        <span class="title-label">Danh sách quyền</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-list>
+                            <v-list-item link>
+                                <v-list-item-action>
+                                    <v-checkbox></v-checkbox>
+                                </v-list-item-action>
+                                <v-list-item-title>
+                                    Quản trị
+                                </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item link>
+                                <v-list-item-action>
+                                    <v-checkbox></v-checkbox>
+                                </v-list-item-action>
+                                <v-list-item-title>
+                                    Quản lý
+                                </v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col cols="12" sm="8" md="9">
+                <v-card>
+                    <v-card-title primary-title>
+                        <span class="title-label">Danh sách chức năng hệ thống</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row>
+                            <v-col cols="12" sm="4" md="3">
+                                <span>Quản lý chi nhánh</span>
+                            </v-col>
+                            <v-col cols="12" sm="8" md="9">
+
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+    </div>
+</template>

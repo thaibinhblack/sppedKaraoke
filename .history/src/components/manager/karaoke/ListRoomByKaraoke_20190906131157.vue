@@ -1,0 +1,26 @@
+<template>
+    <v-col class="12" sm="12">
+                <v-card>
+                    <v-card-title primary-title>
+                        <v-row>
+                            <v-col cols="12" sm="12">
+                                <span style="font-size: 15px;" class="title-label">DANH SÁCH PHÒNG CỦA CHI NHÁNH {{karaoke.NAME_BAR_KARAOKE}}</span>
+                            </v-col>
+                            <v-col cols="12" sm="12">
+                                <button class="btn-add"><router-link :to="'/manager-karaoke/karaoke/'+$route.params.uuid+'/add-room'"><v-icon>mdi-plus</v-icon> Thêm phòng mới</router-link></button>
+                            </v-col>
+                        </v-row>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-data-table
+                            :headers="headers"
+                            :items="room"
+                        >
+                            <template v-slot:item.ACTION="{item}">
+                                <router-link :to="'/manager-karaoke/karaoke/'+$route.params+uuid+'/room/'+item.UUID_ROOM_BAR_KARAOKE"><v-icon>mdi-chevron-right</v-icon></router-link>
+                            </template>
+                        </v-data-table>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+</template>
