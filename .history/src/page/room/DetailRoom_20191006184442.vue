@@ -1,0 +1,66 @@
+<template>
+<div id="detail-room">
+    <header-tool-bar />
+    <v-container grid-list-xs>
+        <v-row>
+            <v-col cols="12" sm="12" class="group-link">
+                <ul class="list-link">
+                    <li></li>
+                </ul>
+            </v-col>
+            <v-col cols="12" sm="7" md="8">
+                <v-row>
+                    <v-col cols="12" sm="5" md="4">
+
+                    </v-col>
+                    <v-col cols="12" sm="7" md="8">
+                        <v-img :src="$store.state.PUBLIC_URL + room.IMAGE_ROOM"></v-img>
+                    </v-col>
+                </v-row>
+            </v-col>
+            <v-col cols="12" sm="4"></v-col>
+        </v-row>
+    </v-container>
+    <v-overlay :value="$store.state.loading" style="color:#fff !important;">
+        <v-progress-circular indeterminate size="32" style="color:#fff;"></v-progress-circular>
+    </v-overlay>
+</div>
+</template>
+
+<script>
+export default {
+    components:{
+        'header-tool-bar': () => import('@/components/header/ToolBar.vue'),
+        'header-search': () => import('@/components/header/HeaderSearch.vue'),
+    },
+    data()
+    {
+        return {
+            room: {},
+            images: []
+        }
+    },
+    methods: {
+        async ApiGetRoom()
+        {
+            this.$store.state.loading = true
+            await this.$http.get(this.$store.state.API_URL + 'room?URL_SAFE='+this.$route.params.safeurl
+            +'&NAME_ROOM_BAR_KARAOKE='+this.$route.params.name_room).then((response) => {
+                this.room = response.data
+                this.ApiGetMeda(response.data.UUID_ROOM_BAR_kARAOKE)
+            })
+            this.$store.state.loading = false
+        },
+        ApiGetMeda(UUID)
+        {
+            this.$http.get(this.$store.state.API_URL + 'image/'+UUID+'?type=UUID_ROOM_BAR_KARAOKE').then((response) => {
+                this.images = response.data
+            })
+        }
+    },
+    created()
+    {
+        this.ApiGetRoom()
+    }
+}
+</script>
