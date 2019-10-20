@@ -1,0 +1,188 @@
+<template>
+    <div id="page-profile">
+        <div id="header-top">
+            <v-container grid-list-xs style="padding-bottom: 0px;">
+                <v-row>
+                    <v-col cols="12" sm="3" md="2" class="logo">
+                        <h2><router-link to="/" style="color:#333;">SPEED KARAOKE</router-link></h2>
+                    </v-col>
+                    <v-col cols="12" sm="9" md="10">
+                        <ul class="info-account">
+                            <li>HÔM NAY <br /> {{now}}</li>
+                            <li>TÀI KHOẢN CỦA TÔI <br/> {{user.DISPLAY_NAME}} </li>
+                        </ul>
+                    </v-col>
+                    <v-col cols="12" sm="12" style="padding-bottom: 0px;"> 
+                        <ul class="list-option">
+                            <li><router-link to="/profile/bookings">Đặt chỗ của tôi</router-link></li>
+                            <li><router-link to="/profile/message">Tin nhắn</router-link></li>
+                            <li class="active"><router-link to="/profile/edit-account">Cài đặt tài khoản</router-link></li>
+                        </ul>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </div>
+        <div id="main-profile">
+            <v-container grid-list-xs>
+                <v-row>
+                    <v-col cols="12" sm="7" md="6" >
+                       <v-list-item two-line>
+                           <v-list-item-avatar>
+                               <v-avatar
+                                   size="70px"
+                                   color="#e2e2e2"
+                               >
+                                   <!-- <img src="src" alt="alt"> -->
+                               </v-avatar>
+                           </v-list-item-avatar>
+                           <v-list-item-content>
+                               <v-list-item-title>
+                                   <h3>{{user.EMAIL}} - Thông tin tài khoản</h3>
+                               </v-list-item-title>
+                               <v-list-item-sub style="margin-top:7px;">
+                                  <small>Cá nhân hóa tài khoản bằng việc cập nhật thông tin của bạn</small>
+                               </v-list-item-sub>
+                           </v-list-item-content>
+                       </v-list-item>
+                    </v-col>
+                    <v-col cols="12" sm="5" md="6" style="text-align:right">
+                        <button class="btn btn-manager">Trở thành chủ nhà</button>
+                    </v-col>
+                    <v-col cols="12" sm="5" md="4">
+                        <v-list>
+                            <v-list-item to="/profile/edit-account/info-account">
+                                <v-list-item-title>
+                                    Thông tin tài khoản
+                                </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item to="/profile/edit-account/password">
+                                <v-list-item-title>
+                                    Thay đổi mật khẩu
+                                </v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-col>
+                    <v-col cols="12" sm="7" md="8">
+                        <v-list-item two-line style="margin-bottom:25px;">
+                            <v-list-item-avatar>
+                                <v-avatar
+                                size="80"
+                                color="#e2e2e2"
+                                >
+                                    <!-- <img src="src" alt="alt"> -->
+                                </v-avatar>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    <button class="btn btn-avatar"> Đổi ảnh đại diện</button>
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <label for="EMAIL">Email</label>
+                        <v-text-field
+
+                            name="EMAIL"
+                            label="EMAIL"
+                            prepend-icon="mdi-email"
+                            v-model="user.EMAIL"
+                            disabled
+                        ></v-text-field>
+                        <label for="NAME">Họ & Tên</label>
+                        <v-text-field
+                            name="NAME"
+                            label="Họ & Tên"
+                            prepend-icon="mdi-account"
+                            v-model="user.DISPLAY_NAME"
+                        ></v-text-field>
+                        <label for="PHONE">Số điện thoại</label>
+                        <v-text-field
+                            name="PHONE"
+                            label="Họ & Tên"
+                            prepend-icon="mdi-phone"
+                            v-model="user.PHONE"
+                        ></v-text-field>
+                        <label for="ADDRESS">Địa chỉ</label>
+                        <v-text-field
+                            name="ADDRESS"
+                            label="Địa chỉ"
+                            prepend-icon="mdi-map-marker"
+                            v-model="user.ADDRESS"
+                        ></v-text-field>
+                        <v-menu
+                            ref="menu1"
+                            v-model="menu1"
+                            :close-on-content-click="false"
+                            transition="scale-transition"
+                            offset-y
+                            full-width
+                            max-width="290px"
+                            min-width="290px">
+                            <template v-slot:activator="{ on }">
+                                <v-text-field
+                                v-model="dateFormatted"
+                                label="Ngày sinh"
+                                hint="MM/DD/YYYY format"
+                                persistent-hint
+                                prepend-icon="mdi-calendar-range"
+                                @blur="date = parseDate(dateFormatted)"
+                                required
+                                v-on="on"
+                                ></v-text-field>
+                            </template>
+                            <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                        </v-menu>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </div>
+        <v-overlay :value="$store.state.loading" style="color:#fff !important;">
+            <v-progress-circular indeterminate size="32" style="color:#fff;"></v-progress-circular>
+        </v-overlay>
+    </div>
+</template>
+
+<script>
+import moment from 'moment'
+export default {
+    data()
+    {
+        return {
+            now: moment(new Date()).format('YYYY MM DD'),
+            user: {},
+            date: new Date()
+        }
+    },
+    methods: {
+        async ApiCheckToken()
+        {
+            this.$store.state.loading = true
+            await this.$http.get(this.$store.state.API_URL + 'user/token?api_token='+this.$session.get('token')).then((response) => {
+                this.user = response.data
+                if(response.data.BIRTH_DAY != null)
+                {
+                    this.date = response.data.BIRTH_DAY
+                }
+                // console.log(response.data)
+            })
+            this.$store.state.loading = false
+        }
+    },
+    created()
+    {
+        this.ApiCheckToken()
+    }
+}
+</script>
+<style scoped>
+#header-top {background-color: #fff;}
+.info-account,.list-option {text-align: right;width: 100%}
+.info-account li,.list-option li {display: inline-block;list-style: none; margin: 0 15px;}
+.list-option {text-align: left}
+.list-option li {margin: 0 10px;}
+.list-option li.active {padding-bottom: 10px;border-bottom: 3px #f68a39 solid}
+.list-option li a {color: #a3acb9}
+.list-option li.active a,.list-option li a:hover {color: #333;;}
+.btn-manager,.btn-avatar {padding: 15px 25px;color: #f68a39;border: 1px solid #eeeeee;background: #fff;outline: none;font-size: 13px}
+.btn-avatar {color: #fff;background: #f68a39; margin-left: 15px;}
+label {font-weight: bold}
+</style>

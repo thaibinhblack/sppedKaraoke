@@ -1,0 +1,17 @@
+<template>
+    <div id="page-profile" style="padding:15px;">
+        <v-row>
+            <v-col cols="12" sm="3" md="2" class="logo">
+                <h2><router-link to="/">SPEED KARAOKE</router-link></h2>
+            </v-col>
+        </v-row>
+    </div>
+</template>
+
+<script>
+export default {
+    components:{
+        'header-tool-bar': () => import('@/components/header/ToolBar.vue')
+    },
+}
+</script>

@@ -1,0 +1,22 @@
+<template>
+  <div>
+    <beautiful-chat
+      :participants="participants"
+      :titleImageUrl="titleImageUrl"
+      :onMessageWasSent="onMessageWasSent"
+      :messageList="messageList"
+      :newMessagesCount="newMessagesCount"
+      :isOpen="isChatOpen"
+      :close="closeChat"
+      :icons="icons"
+      :open="openChat"
+      :showEmoji="true"
+      :showFile="true"
+      :showTypingIndicator="showTypingIndicator"
+      :colors="colors"
+      :alwaysScrollToBottom="alwaysScrollToBottom"
+      :messageStyling="messageStyling"
+      @onType="handleOnType"
+      @edit="editMessage" />
+  </div>
+</template>
