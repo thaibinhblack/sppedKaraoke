@@ -5,7 +5,7 @@
         <v-container fluid grid-list-xs class="custom">
             <v-row>
                  <v-col cols="12" sm="12">
-                    <h3><strong>Hôm nay có khuyến mãi gì?</strong></h3>
+                    <h3>Hôm nay có khuyến mãi gì?</h3>
                     <span>Chỉ có tại speed karaoke, book ngay để được ưu đãi hấp dẫn!</span>
                 </v-col>
                 <hooper  height="180px" :settings="hooperPrômtion" :itemsToShow="3">
@@ -19,7 +19,7 @@
                         </slide>
                 </hooper>
                 <v-col cols="12" sm="12">
-                    <h3><strong>Bạn muốn tìm kiếm các chi nhánh gần đây?</strong></h3>
+                    <h3>Bạn muốn tìm kiếm các chi nhánh gần đây?</h3>
                     <span>Danh sách chi nhánh của tỉnh <strong>{{karaokeGPSs[0].NAME_PROVINCE}}</strong></span>
                 </v-col>
                 <hooper class="slider" height="365px" :settings="hooperSettings">
@@ -176,14 +176,7 @@ export default {
                 .then((response) => {
                     const search = new FormData()
                     console.log(response.data.results[0])
-                    if(response.data.results[0].components.city)
-                    {
-                        search.append("NAME_PROVINCE", response.data.results[0].components.city)
-                    }
-                    else{
-                        search.append("search",response.data.results[0].components.county)
-                    
-                    }
+                    search.append("search",response.data.results[0].components.county)
                     this.$http.post(this.$store.state.API_URL + 'province/search',search).then((response) => {
                         this.karaokeGPSs= response.data
                         console.log(response.data)

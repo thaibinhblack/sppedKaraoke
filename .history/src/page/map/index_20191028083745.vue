@@ -69,10 +69,17 @@ export default {
         {
             this.$http.get(this.$store.state.API_URL + 'map').then((response) => {
                 this.karaokes = response.data
+                console.log(response.data)
             })
         },
-        
-       
+        goTo(karaoke)
+        {
+             this.commitgetFeature(karaoke.OBJECTID)
+        },
+        getActive(objectid)
+        {
+            return objectid == this.getObjectid
+        }
     },
     async created()
     {

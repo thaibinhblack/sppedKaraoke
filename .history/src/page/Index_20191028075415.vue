@@ -5,7 +5,7 @@
         <v-container fluid grid-list-xs class="custom">
             <v-row>
                  <v-col cols="12" sm="12">
-                    <h3><strong>Hôm nay có khuyến mãi gì?</strong></h3>
+                    <h3>Hôm nay có khuyến mãi gì?</h3>
                     <span>Chỉ có tại speed karaoke, book ngay để được ưu đãi hấp dẫn!</span>
                 </v-col>
                 <hooper  height="180px" :settings="hooperPrômtion" :itemsToShow="3">
@@ -18,15 +18,14 @@
                            </div>
                         </slide>
                 </hooper>
-                <v-col cols="12" sm="12">
-                    <h3><strong>Bạn muốn tìm kiếm các chi nhánh gần đây?</strong></h3>
-                    <span>Danh sách chi nhánh của tỉnh <strong>{{karaokeGPSs[0].NAME_PROVINCE}}</strong></span>
+                <!-- <v-col cols="12" sm="12">
+                    <h3>Các chi nhánh karaoke tại {{karaokeGPSs[0].NAME_PROVINCE}}</h3>
                 </v-col>
                 <hooper class="slider" height="365px" :settings="hooperSettings">
                     <slide v-for="(karaoke,index) in karaokeGPSs" :key="index">
                         <content-event  :karaoke="karaoke"/>
                     </slide>
-                </hooper>
+                </hooper> -->
                 <v-col cols="12" sm="12">
                     <h3>Địa điểm nổi bật?</h3>
                     <span>Cùng speed karaoke nắm bắt những giây phút vui vẻ!</span>
@@ -45,17 +44,8 @@
                         </slide>
                 </hooper>
                 <v-col cols="12" sm="12">
-                    <h3><strong>Top 10 địa điểm karaoke nổi bật?</strong></h3>
-                    <span>Cùng speed karaoke khám phá ngay!</span>
-                </v-col>
-                <hooper class="slider" height="365px" :settings="hooperSettings">
-                    <slide v-for="(karaoke,index) in karaoke_top100" :key="index">
-                        <content-event  :karaoke="karaoke"/>
-                    </slide>
-                </hooper>
-                <v-col cols="12" sm="12">
-                    <h3><strong>Bạn muốn trãi nghiệm các địa điểm karaoke mới?</strong></h3>
-                    <span>Danh sách các địa điểm karaoke mới nhất</span>
+                    <h3>Nghỉ lễ nên đi hát ở đâu?</h3>
+                    <span>Lễ này bạn đi đâu, App Karaoke đều giảm sâu đến đó,mức giảm lên tới 25%. Chớp lấy cơ hội, đặt ngay để có chuyến đi tiết kiệm nhất.</span>
                 </v-col>
                 <hooper class="slider" height="365px" :settings="hooperSettings">
                     <slide v-for="(karaoke,index) in karaokes" :key="index">
@@ -130,8 +120,7 @@ export default {
             },
              karaoke_province: [],
              promotions: [],
-             karaokeGPSs: [],
-             karaoke_top100: []
+             karaokeGPSs: []
         }
        
     },
@@ -144,9 +133,6 @@ export default {
             })
             await this.$http.get(this.$store.state.API_URL + 'karaoke?sort=groupby').then((response) => {
                 this.karaoke_province = response.data
-            })
-            await this.$http.get(this.$store.state.API_URL + 'karaoke').then((response) => {
-                this.karaoke_top100 = response.data
             })
             this.$store.state.loading = await false
         },
@@ -176,17 +162,9 @@ export default {
                 .then((response) => {
                     const search = new FormData()
                     console.log(response.data.results[0])
-                    if(response.data.results[0].components.city)
-                    {
-                        search.append("NAME_PROVINCE", response.data.results[0].components.city)
-                    }
-                    else{
-                        search.append("search",response.data.results[0].components.county)
-                    
-                    }
+                    search.append("search",response.data.results[0].components.city)
                     this.$http.post(this.$store.state.API_URL + 'province/search',search).then((response) => {
                         this.karaokeGPSs= response.data
-                        console.log(response.data)
                     })
                     
                 })
@@ -208,7 +186,7 @@ export default {
 </script>
 
 <style>
-#index {background: #ffffff;}
+#index {background: #ebebeb;}
 a {text-decoration: none;color: #333 !important;}
 .container.custom {padding: 10px 15px;}
 .bg-event-karaoke {width: 100%;height: 183px;background-size: cover;background-position: 50%;}

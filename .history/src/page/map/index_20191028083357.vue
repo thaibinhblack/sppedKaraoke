@@ -4,7 +4,7 @@
     <header-search />
     <v-row class="main-map">
         <v-col cols="12" sm="4" md="3" >
-           <karaoke-map v-for="(karaoke,index) in karaokes" :key="index" :karaoke="karaoke" />
+           
         </v-col>
         <v-col cols="12" sm="8" md="9" style="position:relative;">
             <div id="MapView">
@@ -33,8 +33,7 @@ export default {
         'header-tool-bar': () => import('@/components/header/ToolBar.vue'),
         'header-search': () => import('@/components/header/HeaderSearch.vue'),
         'widget-add-karaoke': () => import('@/components/widget/addKaraoke.vue'),
-        'widget-add-province': () => import('@/components/widget/addProvince.vue'),
-        'karaoke-map': () => import ('@/components/karaoke/listKaraokeMap.vue')
+        'widget-add-province': () => import('@/components/widget/addProvince.vue')
     },
     data()
     {
@@ -69,10 +68,17 @@ export default {
         {
             this.$http.get(this.$store.state.API_URL + 'map').then((response) => {
                 this.karaokes = response.data
+                console.log(response.data)
             })
         },
-        
-       
+        goTo(karaoke)
+        {
+             this.commitgetFeature(karaoke.OBJECTID)
+        },
+        getActive(objectid)
+        {
+            return objectid == this.getObjectid
+        }
     },
     async created()
     {

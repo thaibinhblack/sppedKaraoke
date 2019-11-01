@@ -16,7 +16,7 @@
                             </v-col>
                         </v-row>
                         <v-row >
-                            <v-col  cols="12" sm="3" md="2" v-for="(image,i) in images" :key="i">
+                            <v-col v-if="images.length > 0" cols="12" sm="3" md="2" v-for="(image,i) in images" :key="i">
                                 <div class="item-image" @click="selected = i">
                                      <v-img width="100%" height="150px" :src="$store.state.PUBLIC_URL + image.URL_IMAGE"></v-img>
                                 </div>

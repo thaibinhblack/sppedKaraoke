@@ -176,14 +176,7 @@ export default {
                 .then((response) => {
                     const search = new FormData()
                     console.log(response.data.results[0])
-                    if(response.data.results[0].components.city)
-                    {
-                        search.append("NAME_PROVINCE", response.data.results[0].components.city)
-                    }
-                    else{
-                        search.append("search",response.data.results[0].components.county)
-                    
-                    }
+                    search.append("search",response.data.results[0].components.county)
                     this.$http.post(this.$store.state.API_URL + 'province/search',search).then((response) => {
                         this.karaokeGPSs= response.data
                         console.log(response.data)

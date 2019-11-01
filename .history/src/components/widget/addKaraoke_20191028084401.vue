@@ -106,13 +106,13 @@ export default {
           this.districts = response.data
         })
       },
-      ApiGetKaraoke()
+      async ApiGetKaraoke()
       {
 
-        this.$http.get(this.$store.state.API_URL + 'karaoke/'+this.$route.query.karaoke+'?api_token='+this.$session.get('token'))
+        await this.$http.get(this.$store.state.API_URL + 'karaoke/'+this.$route.query.karaoke+'?api_token='+this.$session.get('token'))
         .then((response) => {
           this.karaoke = response.data
-          console.log('ID_PROVINCE',response.data)
+          console.log(response.data)
           this.ApiDistrict(response.data.ID_PROVINCE)
         })
       },

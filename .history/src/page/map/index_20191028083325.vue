@@ -4,7 +4,27 @@
     <header-search />
     <v-row class="main-map">
         <v-col cols="12" sm="4" md="3" >
-           <karaoke-map v-for="(karaoke,index) in karaokes" :key="index" :karaoke="karaoke" />
+            <div class="item-karaoke" v-for="(karaoke,index) in karaokes" :key="index" >
+                <v-icon class="icon-active" :class="{active: getActive(karaoke.OBJECTID)}">mdi-checkbox-marked</v-icon>
+                <v-row>
+                   <v-list-item two-line>
+                       <v-list-item-avatar>
+                            <v-avatar
+                            size="70px"
+                            color="#e2e2e2"
+                            >
+                                <img v-if="karaoke.LOGO_BAR_KARAOKE != null" :src="$store.state.PUBLIC_URL + karaoke.LOGO_BAR_KARAOKE" :alt="karaoke.NAME_BAR_KARAOKE">
+                            </v-avatar>
+                       </v-list-item-avatar>
+                       <v-list-item-content>
+                           <p><strong>{{karaoke.NAME_BAR_KARAOKE}}</strong></p>
+                           <P class="text-map goto" @click="goTo(karaoke)"><v-icon>mdi-map-marker</v-icon> {{karaoke.NAME_PROVINCE}}, {{karaoke.NAME_DISTRICT}}, {{karaoke.ADDRESS_BAR_KARAOKE}}</P>
+                           <p><v-icon color="yellow" size="12" v-for="i in karaoke.STAR_RATING" :key="i">mdi-star</v-icon></p>
+                           <p class="text-map"><router-link :to="'/karaoke/'+karaoke.URL_SAFE">Xem chi tiết</router-link></p>
+                       </v-list-item-content>
+                   </v-list-item>
+                </v-row>
+            </div>
         </v-col>
         <v-col cols="12" sm="8" md="9" style="position:relative;">
             <div id="MapView">
@@ -33,8 +53,7 @@ export default {
         'header-tool-bar': () => import('@/components/header/ToolBar.vue'),
         'header-search': () => import('@/components/header/HeaderSearch.vue'),
         'widget-add-karaoke': () => import('@/components/widget/addKaraoke.vue'),
-        'widget-add-province': () => import('@/components/widget/addProvince.vue'),
-        'karaoke-map': () => import ('@/components/karaoke/listKaraokeMap.vue')
+        'widget-add-province': () => import('@/components/widget/addProvince.vue')
     },
     data()
     {
@@ -69,10 +88,17 @@ export default {
         {
             this.$http.get(this.$store.state.API_URL + 'map').then((response) => {
                 this.karaokes = response.data
+                console.log(response.data)
             })
         },
-        
-       
+        goTo(karaoke)
+        {
+             this.commitgetFeature(karaoke.OBJECTID)
+        },
+        getActive(objectid)
+        {
+            return objectid == this.getObjectid
+        }
     },
     async created()
     {

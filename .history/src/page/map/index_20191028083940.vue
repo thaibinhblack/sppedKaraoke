@@ -69,6 +69,7 @@ export default {
         {
             this.$http.get(this.$store.state.API_URL + 'map').then((response) => {
                 this.karaokes = response.data
+                console.log(response.data)
             })
         },
         
