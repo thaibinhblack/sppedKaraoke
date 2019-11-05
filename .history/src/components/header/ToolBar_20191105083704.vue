@@ -61,7 +61,10 @@ export default {
     },
     created()
     {
-        
+        if(!this.user.UUID_USER)
+        {
+            this.$session.destroy()
+        }
         if(this.$session.has('token')){
             this.ApiCheckToken()
         }

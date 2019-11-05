@@ -206,12 +206,6 @@ export default {
             //  this.$socket.client.emit('emit_method', val);
             // this.$socket.client.emit('booking','hello booking')
             // this.$socket.emit('emit_method', data)
-        },
-        cancle()
-        {
-             this.axios.get(this.$store.state.API_URL + 'cancle?api_token='+this.$session.get('token')+'&UUID_ROOM_BAR_KARAOKE='+this.room.UUID_ROOM_BAR_KARAOKE).then(() => {
-                 this.user_booking = -1
-            })
         }
     },
     created()

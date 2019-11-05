@@ -29,7 +29,9 @@
             <hooper group="group1" :itemsToShow="4" :centerMode="true">
                 <slide v-for="(image,index) in images" :key="index" style="padding:10px;">
                     <v-img :src="$store.state.PUBLIC_URL + image.URL_IMAGE"></v-img>
-                    
+                    <f7-block>
+                        <h3>{{room.NAME_ROOM_BAR_KARAOKE}}</h3>
+                    </f7-block>
                 </slide>
             </hooper>
         </v-card-text>

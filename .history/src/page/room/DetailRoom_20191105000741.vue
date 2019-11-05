@@ -44,16 +44,11 @@
                                     <strong>{{attribute.NAME_ATTRIBUTE}}</strong>
                                     {{attribute.CONTENT_ATTRIBUTE}}
                                 </p>
-                                <div v-if="$session.has('token')">
-                                     <button v-if="user_booking == -1 || user_booking == 2 || user_booking == 3 || user_booking == 4" class="btn btn-booking" @click="bookingRoom()">Đặt phòng ngay</button>
-                                    <button v-if="user_booking == 0 " class="btn btn-booking" @click="cancle()">Hủy đặt phòng</button>
-                                    <button v-if="user_booking == 1 " class="btn btn-booking" @click="paypal()">Thanh toán</button>
-                                </div>
-                                <div v-else>
-                                    <button v-if="user_booking == 1 " class="btn btn-booking" >Đã có người đặt phòng</button>
-                                    <button v-else class="btn btn-booking" @click="bookingRoom()">Đặt phòng ngay</button>
+                                <button v-if="booking == false" class="btn btn-booking" @click="bookingRoom()">Đặt phòng ngay</button>
+                                <button v-else class="btn btn-booking" disabled>
                                     
-                                </div>
+                                        {{message_booking}} <br />
+                                        <small style="color: #fff;">Đặt vào lúc: {{TIME_START}}</small></button>
                                 <v-list-item two-line style="margin-top:15px">
                                     <v-list-item-avatar>
                                         <v-avatar
@@ -132,7 +127,6 @@ export default {
             booking: false,
             TIME_START: null,
             message_booking: '',
-            user_booking: -1
         }
     },
     methods: {
@@ -174,10 +168,28 @@ export default {
         
         ApiGetBooking()
         {
-             this.$http.get(this.$store.state.API_URL + 'check_booking?api_token='+this.$session.get('token')+'&status=check&UUID_ROOM_BAR_KARAOKE='+this.room.UUID_ROOM_BAR_KARAOKE).then((response) => {
-                this.user_booking = response.data.STATUS
-                // console.log(response.data)
-            })
+            if(this.$session.has('token'))
+            {
+                this.$http.get(this.$store.state.API_URL + 'booking?api_token='+this.$session.get('token')+'&status=check&UUID_ROOM_BAR_KARAOKE='+this.room.UUID_ROOM_BAR_KARAOKE).then((response) => {
+                    this.booking = response.data.success
+                    if(response.data.success == true)
+                    {
+                        this.message_booking = response.data.message
+                        this.TIME_START = response.data.data.CREATED_AT
+                    }
+                })
+            }
+            else
+            {
+                this.$http.get(this.$store.state.API_URL + 'booking/'+this.room.UUID_ROOM_BAR_KARAOKE+'/show?status=1').then((response) => {
+                    this.booking = response.data.success
+                    if(response.data.success == true)
+                    {
+                        this.message_booking = 'Đã có người đặt phòng'
+                        this.TIME_START = response.data.data.CREATED_AT
+                    }
+                })
+            }
             
         },
         async bookingRoom()
@@ -197,8 +209,8 @@ export default {
                 data.append("UUID_ROOM_BAR_KARAOKE",this.room.UUID_ROOM_BAR_KARAOKE)
                 data.append("UUID_BAR_KARAOKE",this.karaoke.UUID_BAR_KARAOKE)
                 // data.append("TIME_START",)
-                await this.$http.post(this.$store.state.API_URL +'booking?api_token='+this.$session.get('token'),data).then((response) => {
-                    this.ApiGetBooking()
+                await this.$http.post(this.$store.state.API_URL +'bookingmobile?api_token='+this.$session.get('token'),data).then((response) => {
+                    
                     
                 })
             }
@@ -206,12 +218,6 @@ export default {
             //  this.$socket.client.emit('emit_method', val);
             // this.$socket.client.emit('booking','hello booking')
             // this.$socket.emit('emit_method', data)
-        },
-        cancle()
-        {
-             this.axios.get(this.$store.state.API_URL + 'cancle?api_token='+this.$session.get('token')+'&UUID_ROOM_BAR_KARAOKE='+this.room.UUID_ROOM_BAR_KARAOKE).then(() => {
-                 this.user_booking = -1
-            })
         }
     },
     created()

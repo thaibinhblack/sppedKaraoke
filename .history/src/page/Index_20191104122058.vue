@@ -18,11 +18,11 @@
                            </div>
                         </slide>
                 </hooper>
-                <v-col cols="12" sm="12" >
+                <v-col cols="12" sm="12" v-if="karaokeGPSs.length > 0">
                     <h3><strong>Bạn muốn tìm kiếm các chi nhánh gần đây?</strong></h3>
-                    <span>Danh sách chi nhánh của tỉnh <strong>{{NAME_PROVINCE}}</strong></span>
+                    <span>Danh sách chi nhánh của tỉnh <strong>{{karaokeGPSs[0].NAME_PROVINCE}}</strong></span>
                 </v-col>
-                <hooper class="slider" height="365px" :settings="hooperSettings" v-if="karaokeGPSs.length > 0">
+                <hooper class="slider" height="365px" :settings="hooperSettings">
                     <slide v-for="(karaoke,index) in karaokeGPSs" :key="index">
                         <content-event  :karaoke="karaoke"/>
                     </slide>
@@ -128,11 +128,10 @@ export default {
                 }
                 }
             },
-            karaoke_province: [],
-            promotions: [],
-            karaokeGPSs: [],
-            karaoke_top100: [],
-            NAME_PROVINCE: ""
+             karaoke_province: [],
+             promotions: [],
+             karaokeGPSs: [],
+             karaoke_top100: []
         }
        
     },
@@ -179,11 +178,9 @@ export default {
                     console.log(response.data.results[0])
                     if(response.data.results[0].components.city)
                     {
-                        this.NAME_PROVINCE = response.data.results[0].components.city
                         search.append("NAME_PROVINCE", response.data.results[0].components.city)
                     }
                     else{
-                        this.NAME_PROVINCE = response.data.results[0].components.county
                         search.append("search",response.data.results[0].components.county)
                     
                     }

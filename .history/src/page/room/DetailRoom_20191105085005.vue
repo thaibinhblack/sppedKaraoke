@@ -176,7 +176,7 @@ export default {
         {
              this.$http.get(this.$store.state.API_URL + 'check_booking?api_token='+this.$session.get('token')+'&status=check&UUID_ROOM_BAR_KARAOKE='+this.room.UUID_ROOM_BAR_KARAOKE).then((response) => {
                 this.user_booking = response.data.STATUS
-                // console.log(response.data)
+                console.log(response.data)
             })
             
         },
@@ -198,7 +198,7 @@ export default {
                 data.append("UUID_BAR_KARAOKE",this.karaoke.UUID_BAR_KARAOKE)
                 // data.append("TIME_START",)
                 await this.$http.post(this.$store.state.API_URL +'booking?api_token='+this.$session.get('token'),data).then((response) => {
-                    this.ApiGetBooking()
+                    
                     
                 })
             }
@@ -206,12 +206,6 @@ export default {
             //  this.$socket.client.emit('emit_method', val);
             // this.$socket.client.emit('booking','hello booking')
             // this.$socket.emit('emit_method', data)
-        },
-        cancle()
-        {
-             this.axios.get(this.$store.state.API_URL + 'cancle?api_token='+this.$session.get('token')+'&UUID_ROOM_BAR_KARAOKE='+this.room.UUID_ROOM_BAR_KARAOKE).then(() => {
-                 this.user_booking = -1
-            })
         }
     },
     created()

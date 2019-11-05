@@ -209,7 +209,7 @@ export default {
         },
         cancle()
         {
-             this.axios.get(this.$store.state.API_URL + 'cancle?api_token='+this.$session.get('token')+'&UUID_ROOM_BAR_KARAOKE='+this.room.UUID_ROOM_BAR_KARAOKE).then(() => {
+             this.axios.get(this.$store.state.API_URL + 'cancle?api_token='+this.$session.get('token')+'&UUID_ROOM_BAR_KARAOKE='+this.$f7route.params.UUID).then(() => {
                  this.user_booking = -1
             })
         }
