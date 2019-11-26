@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
     components: {
         'header-tool-bar': () => import('@/components/header/ToolBar.vue'),
@@ -25,17 +25,8 @@ export default {
             user: null
         }
     },
-    computed: {
-        ...mapGetters(["getAction"])
-    },
-    watch:{
-        getAction(newVal)
-        {
-            console.log(newVal)
-        }
-    },
     methods:{
-        ...mapActions(["commitUser","commitAction"]),
+        ...mapActions(["commitUser"]),
         ApiCheckToken()
         {
             this.$http.get(this.$store.state.API_URL + 'user/token?api_token='+this.$session.get('token')).then((response) => {
@@ -53,17 +44,7 @@ export default {
          api_rule(id)
         {
             this.axios.get(this.$store.state.API_URL + 'function_rule/'+id+'?api_token='+this.$session.get('token')).then((response) => {
-                response.data.forEach(element => {
-                    if(element.UUID_FUNCTION == 1)
-                    {
-                        this.commitAction({
-                            view: element.FUNCTION_VIEW,
-                            create: element.FUNCTION_CREATE,
-                            edit: element.FUNCTION_EDIT,
-                            delete: element.FUNCTION_DELETE
-                        })
-                    }
-                });
+                console.log(response.data)
             })
         }
     },

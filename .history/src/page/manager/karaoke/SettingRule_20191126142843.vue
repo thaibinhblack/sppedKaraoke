@@ -165,7 +165,6 @@ export default {
                         // object.push(response.data[index].cn_xuat_file)
                         console.log('lenght',response.data[index].FUNCTION_VIEW -1 )
                         check_rule[response.data[index].UUID_FUNCTION -1 ] = object
-                        console.log(object)
                         object= []
                         
                     }
@@ -189,7 +188,6 @@ export default {
             
                     if(check.length >= 1)
                     {
-                        console.log(check)
                         const id_function = check[0].slice(0,1)
                         const value_function = []
                         const function_view = null

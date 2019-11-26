@@ -150,7 +150,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
     props: ["activeSidebar","user"],
     data()
@@ -159,9 +158,6 @@ export default {
             stores: [],
             store: null
         }
-    },
-    computed: {
-        ...mapGetters(["getAction"])
     },
     watch:{
         store(newVal){
@@ -174,10 +170,8 @@ export default {
             this.$http.get(this.$store.state.API_URL + 'manager?api_token='+this.$session.get('token')).then((response) => {
                 this.stores = response.data
                 console.log(response.data)
-               
             })
         },
-       
     },
     created()
     {

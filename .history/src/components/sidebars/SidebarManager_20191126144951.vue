@@ -150,7 +150,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
     props: ["activeSidebar","user"],
     data()
@@ -159,9 +158,6 @@ export default {
             stores: [],
             store: null
         }
-    },
-    computed: {
-        ...mapGetters(["getAction"])
     },
     watch:{
         store(newVal){

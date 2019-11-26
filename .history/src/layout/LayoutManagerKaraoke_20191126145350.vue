@@ -28,12 +28,6 @@ export default {
     computed: {
         ...mapGetters(["getAction"])
     },
-    watch:{
-        getAction(newVal)
-        {
-            console.log(newVal)
-        }
-    },
     methods:{
         ...mapActions(["commitUser","commitAction"]),
         ApiCheckToken()

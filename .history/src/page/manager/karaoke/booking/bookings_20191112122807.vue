@@ -24,10 +24,10 @@
                         </template>
                         <template  v-slot:item.STATUS="{item}">
                            <div v-if="update != item.UUID_USER">
-                                <span v-if="item.STATUS == 0">Chờ duyệt</span>
-                                <span v-else-if="item.STATUS == 1">Đã duyệt</span>
-                                <span v-else-if="item.STATUS == 2">Nhận phòng</span>
-                                <span v-else-if="item.STATUS == 3">Đã thanh toán</span>
+                                <span v-if="item.STATUS == 0">Đã đặt</span>
+                                <span v-if="item.STATUS == 1">Đã duyệt</span>
+                                <span v-if="item.STATUS == 2">Nhận phòng</span>
+                                <span v-if="item.STATUS == 3">Đã thanh toán</span>
                                 <span v-else>Hủy</span>
                            </div>
                            <v-select v-else
@@ -79,7 +79,7 @@ export default {
                 {text: 'Đã duyệt', value: 1},
                 {text: 'Nhận phòng', value: 2},
                 {text: 'Thanh toán', value: 3},
-                {text: 'Hủy', value: 4},
+                 {text: 'Hủy', value: 4},
             ],
             status: 0
         }

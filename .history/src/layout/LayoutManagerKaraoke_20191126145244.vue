@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
     components: {
         'header-tool-bar': () => import('@/components/header/ToolBar.vue'),
@@ -23,15 +23,6 @@ export default {
         return {
             activeSidebar: true,
             user: null
-        }
-    },
-    computed: {
-        ...mapGetters(["getAction"])
-    },
-    watch:{
-        getAction(newVal)
-        {
-            console.log(newVal)
         }
     },
     methods:{
@@ -56,12 +47,7 @@ export default {
                 response.data.forEach(element => {
                     if(element.UUID_FUNCTION == 1)
                     {
-                        this.commitAction({
-                            view: element.FUNCTION_VIEW,
-                            create: element.FUNCTION_CREATE,
-                            edit: element.FUNCTION_EDIT,
-                            delete: element.FUNCTION_DELETE
-                        })
+
                     }
                 });
             })

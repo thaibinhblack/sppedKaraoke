@@ -104,9 +104,9 @@ export default {
         }
     },
     watch: {
-        checkRule(newVal)
+        checkRule()
         {
-            this.api_rule_function(newVal)
+            
         }
     },
     methods: {
@@ -143,40 +143,6 @@ export default {
                 this.rule.message_error = 'Lỗi! Xin vui lòng thử lại'
             })
         },
-        api_rule_function(id)
-        {
-            this.axios.get(this.$store.state.API_URL + 'function_rule/'+id+'?api_token='+this.$session.get('token')).then((response) => {
-                console.log(response.data)
-                // this.function_rule = response.data
-                const check_rule = []
-                var object =[]
-                console.log('length',this.functions.length)
-                if(this.functions.length > 0)
-                {
-                    for (let index = 0; index < this.functions.length; index++) {
-                        check_rule.push([]) 
-                    }
-                    for (let index = 0; index < response.data.length; index++) {
-                        console.log('result',response.data.results)
-                        object.push(response.data[index].FUNCTION_VIEW)
-                        object.push(response.data[index].FUNCTION_CREATE)
-                        object.push(response.data[index].FUNCTION_EDIT)
-                        object.push(response.data[index].FUNCTION_DELETE)
-                        // object.push(response.data[index].cn_xuat_file)
-                        console.log('lenght',response.data[index].FUNCTION_VIEW -1 )
-                        check_rule[response.data[index].UUID_FUNCTION -1 ] = object
-                        console.log(object)
-                        object= []
-                        
-                    }
-                    this.function_check  = check_rule   
-                }
-                else
-                {
-                    this.function_check.push([])
-                }
-            })
-        },
         UpdateFunction()
         {
             if(this.checkRule == null)
@@ -189,7 +155,6 @@ export default {
             
                     if(check.length >= 1)
                     {
-                        console.log(check)
                         const id_function = check[0].slice(0,1)
                         const value_function = []
                         const function_view = null
@@ -201,10 +166,22 @@ export default {
                         data.append("FUNCTIONS",check)
                         const app = this;
                         this.axios.post(this.$store.state.API_URL + 'function_rule?api_token='+this.$session.get('token'), data).then((response) => {
-                           console.log(response.data)
-                           alert('Cập nhật thành công')
+                            app.commit_Update(true)
+                            app.$buefy.notification.open({
+                                duration: 1500,
+                                message: `Cập nhật quyền cho người dùng thành công`,
+                                position: 'is-bottom-right',
+                                type: 'is-success',
+                                hasIcon: true
+                            })
                         }).catch(() => {
-                            
+                            app.$buefy.notification.open({
+                                duration: 1500,
+                                message: `Cập nhật quyền cho người dùng thất bại`,
+                                position: 'is-bottom-right',
+                                type: 'is-danger',
+                                hasIcon: true
+                            })
                         })
                     }
                     

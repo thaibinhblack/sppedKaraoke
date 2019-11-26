@@ -27,7 +27,7 @@
                                 <span v-if="item.STATUS == 0">Chờ duyệt</span>
                                 <span v-else-if="item.STATUS == 1">Đã duyệt</span>
                                 <span v-else-if="item.STATUS == 2">Nhận phòng</span>
-                                <span v-else-if="item.STATUS == 3">Đã thanh toán</span>
+                                <span v--elseif="item.STATUS == 3">Đã thanh toán</span>
                                 <span v-else>Hủy</span>
                            </div>
                            <v-select v-else
