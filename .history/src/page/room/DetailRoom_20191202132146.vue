@@ -27,8 +27,8 @@
                 <v-sheet height="500">
                     <v-calendar
                     type="month"
-                    :now="today"
-                    :value="today"
+                    :now="now"
+                    :value="now"
                     :events="events"
                     ></v-calendar>
                 </v-sheet>
@@ -76,7 +76,7 @@
                                     </v-menu>
                                  </v-col>
                                  <v-col cols="12" sm="6">
-                                   
+                                     {{time_start}}
                                        <vue-timepicker v-model="time_start" format="hh:mm:ss" style="width:100%;margin-top:17px"></vue-timepicker>
                                  </v-col>
                                 </v-row>
@@ -162,7 +162,7 @@ export default {
             message_booking: '',
             user_booking: -1,
             date: new Date().toISOString().substr(0, 10),
-            today: this.formatDate(new Date().toISOString().substr(0,10)),
+            now: this.formatDate(new Date().toISOString().substr(0,10)),
             dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
             menu1: false,
             rating_room: 0,
@@ -364,7 +364,7 @@ export default {
         this.check_rating()
         this.api_view()
         const hour =  new Date().getHours() ;
-       
+        hour = hour < 10 ? '0'+hour : hour.toString()
         console.log(hour)
         const minutes =  new Date().getMinutes();
         const a =  new Date().getHours() <= 12 ? 'am' : 'pm';

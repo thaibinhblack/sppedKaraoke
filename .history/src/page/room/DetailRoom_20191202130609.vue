@@ -27,8 +27,8 @@
                 <v-sheet height="500">
                     <v-calendar
                     type="month"
-                    :now="today"
-                    :value="today"
+                    :now="now"
+                    :value="now"
                     :events="events"
                     ></v-calendar>
                 </v-sheet>
@@ -76,7 +76,7 @@
                                     </v-menu>
                                  </v-col>
                                  <v-col cols="12" sm="6">
-                                   
+                                     {{time_start}}
                                        <vue-timepicker v-model="time_start" format="hh:mm:ss" style="width:100%;margin-top:17px"></vue-timepicker>
                                  </v-col>
                                 </v-row>
@@ -162,21 +162,44 @@ export default {
             message_booking: '',
             user_booking: -1,
             date: new Date().toISOString().substr(0, 10),
-            today: this.formatDate(new Date().toISOString().substr(0,10)),
+            now: this.formatDate(new Date().toISOString().substr(0,10)),
             dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
             menu1: false,
             rating_room: 0,
             check: true,
             time_start: {
-               
+               h: '12',
+               m: '00',
+               a:'am'
             },
             events: [
-                {
-                name: 'Vacation',
-                start: '2018-12-30',
-                end: '2019-01-02',
-                },
-            ],
+        {
+          name: 'Vacation',
+          start: '2018-12-30',
+          end: '2019-01-02',
+        },
+        {
+          name: 'Meeting',
+          start: '2019-01-07',
+        },
+        {
+          name: '30th Birthday',
+          start: '2019-01-03',
+        },
+        {
+          name: 'New Year',
+          start: '2019-01-01',
+        },
+        {
+          name: 'Conference',
+          start: '2019-01-21',
+        },
+        {
+          name: 'Hackathon',
+          start: '2019-01-30',
+          end: '2019-02-01',
+        },
+      ],
         }
     },
     computed: {
@@ -341,15 +364,6 @@ export default {
            
             this.axios.get(this.$store.state.API_URL + 'get_booking?DATE_BOOK='+date).then((response) => {
                 console.log(response.data)
-                const date_book = []
-                response.data.forEach((book) => {
-                    date_book.push({
-                        name: book.DISPLAY_NAME,
-                        start: book.DATE_BOOK,
-                        end: book.DATE_BOOK
-                    })
-                })
-                this.events = date_book
             })
         }
     },
@@ -364,13 +378,11 @@ export default {
         this.check_rating()
         this.api_view()
         const hour =  new Date().getHours() ;
-       
-        console.log(hour)
         const minutes =  new Date().getMinutes();
         const a =  new Date().getHours() <= 12 ? 'am' : 'pm';
         console.log(hour, minutes, a)
         this.time_start = {
-            hh: hour,
+            hh: hour < 10 ? '0'+hour : hour.toString(),
             mm: minutes.toString(),
             ss: "00"
             

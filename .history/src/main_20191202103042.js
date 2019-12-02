@@ -22,9 +22,9 @@ import { Icon } from 'leaflet'
 import VueCookies from 'vue-cookies'
 import imageViewer from "vue-image-viewer";
 import StarRating from 'vue-star-rating'
-import 'vue2-timepicker/dist/VueTimepicker.css'
 
 Vue.component('star-rating', StarRating);
+
 
 Vue.use(imageViewer);
 Vue.use(VueCookies)

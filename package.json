@@ -45,6 +45,7 @@
     "vue-session": "^1.0.0",
     "vue-socket.io": "^3.0.7",
     "vue-socket.io-extended": "^4.0.0",
+    "vue-star-rating": "^1.6.1",
     "vue2-editor": "^2.10.2",
     "vue2-leaflet": "^2.2.1",
     "vue2-timepicker": "^1.0.4",

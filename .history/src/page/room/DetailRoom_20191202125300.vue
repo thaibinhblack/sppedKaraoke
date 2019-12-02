@@ -24,16 +24,8 @@
                 <h2>{{karaoke.NAME_BAR_KARAOKE}} - {{room.NAME_ROOM_BAR_KARAOKE}}   </h2>
                 <star-rating :inline="true" :star-size="15" :read-only="true" :show-rating="false" :rating="room.STAR_RATING"></star-rating> <small>({{room.NUMBER_RATED}}), {{room.VIEW_ROOM + 1}} lượt xem</small>
                 <p v-html="room.CONTENT"></p>
-                <v-sheet height="500">
-                    <v-calendar
-                    type="month"
-                    :now="today"
-                    :value="today"
-                    :events="events"
-                    ></v-calendar>
-                </v-sheet>
+                <fb-comment data-width="100%" width="100%" :url="$store.state.DOMAIN + $route.params.safeurrl +'/'+$route.params.name_room" />
             </v-col>
-            
             <v-col cols="12" sm="5" md="4" class="left-layout">
                 <v-card class="booking">
                     <v-card-title primary-title>
@@ -76,7 +68,7 @@
                                     </v-menu>
                                  </v-col>
                                  <v-col cols="12" sm="6">
-                                   
+                                     {{time_start}}
                                        <vue-timepicker v-model="time_start" format="hh:mm:ss" style="width:100%;margin-top:17px"></vue-timepicker>
                                  </v-col>
                                 </v-row>
@@ -162,21 +154,15 @@ export default {
             message_booking: '',
             user_booking: -1,
             date: new Date().toISOString().substr(0, 10),
-            today: this.formatDate(new Date().toISOString().substr(0,10)),
             dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
             menu1: false,
             rating_room: 0,
             check: true,
             time_start: {
-               
-            },
-            events: [
-                {
-                name: 'Vacation',
-                start: '2018-12-30',
-                end: '2019-01-02',
-                },
-            ],
+               h: '12',
+               m: '00',
+               a:'am'
+            }
         }
     },
     computed: {
@@ -341,15 +327,6 @@ export default {
            
             this.axios.get(this.$store.state.API_URL + 'get_booking?DATE_BOOK='+date).then((response) => {
                 console.log(response.data)
-                const date_book = []
-                response.data.forEach((book) => {
-                    date_book.push({
-                        name: book.DISPLAY_NAME,
-                        start: book.DATE_BOOK,
-                        end: book.DATE_BOOK
-                    })
-                })
-                this.events = date_book
             })
         }
     },
@@ -364,13 +341,11 @@ export default {
         this.check_rating()
         this.api_view()
         const hour =  new Date().getHours() ;
-       
-        console.log(hour)
         const minutes =  new Date().getMinutes();
         const a =  new Date().getHours() <= 12 ? 'am' : 'pm';
         console.log(hour, minutes, a)
         this.time_start = {
-            hh: hour,
+            hh: hour < 10 ? '0'+hour : hour.toString(),
             mm: minutes.toString(),
             ss: "00"
             

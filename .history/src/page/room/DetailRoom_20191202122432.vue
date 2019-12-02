@@ -24,16 +24,8 @@
                 <h2>{{karaoke.NAME_BAR_KARAOKE}} - {{room.NAME_ROOM_BAR_KARAOKE}}   </h2>
                 <star-rating :inline="true" :star-size="15" :read-only="true" :show-rating="false" :rating="room.STAR_RATING"></star-rating> <small>({{room.NUMBER_RATED}}), {{room.VIEW_ROOM + 1}} lượt xem</small>
                 <p v-html="room.CONTENT"></p>
-                <v-sheet height="500">
-                    <v-calendar
-                    type="month"
-                    :now="today"
-                    :value="today"
-                    :events="events"
-                    ></v-calendar>
-                </v-sheet>
+                <fb-comment data-width="100%" width="100%" :url="$store.state.DOMAIN + $route.params.safeurrl +'/'+$route.params.name_room" />
             </v-col>
-            
             <v-col cols="12" sm="5" md="4" class="left-layout">
                 <v-card class="booking">
                     <v-card-title primary-title>
@@ -76,7 +68,7 @@
                                     </v-menu>
                                  </v-col>
                                  <v-col cols="12" sm="6">
-                                   
+                                     {{time_start}}
                                        <vue-timepicker v-model="time_start" format="hh:mm:ss" style="width:100%;margin-top:17px"></vue-timepicker>
                                  </v-col>
                                 </v-row>
@@ -162,21 +154,15 @@ export default {
             message_booking: '',
             user_booking: -1,
             date: new Date().toISOString().substr(0, 10),
-            today: this.formatDate(new Date().toISOString().substr(0,10)),
             dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
             menu1: false,
             rating_room: 0,
             check: true,
             time_start: {
-               
-            },
-            events: [
-                {
-                name: 'Vacation',
-                start: '2018-12-30',
-                end: '2019-01-02',
-                },
-            ],
+               h: '12',
+               m: '00',
+               a:'am'
+            }
         }
     },
     computed: {
@@ -187,7 +173,6 @@ export default {
     watch: {
       date (val) {
         this.dateFormatted = this.formatDate(this.date)
-        
       },
       rating_room(newVal)
       {
@@ -216,12 +201,6 @@ export default {
 
             const [year, month, day] = date.split('-')
             return `${day}/${month}/${year}`
-        },
-        formatDate_check (date) {
-            if (!date) return null
-
-            const [year, month, day] = date.split('-')
-            return `${year}/${month}/${day}`
         },
         parseDate (date) {
             if (!date) return null
@@ -274,7 +253,7 @@ export default {
         
         ApiGetBooking()
         {
-            this.$http.get(this.$store.state.API_URL + 'check_booking?api_token='+this.$cookies.get('token')+'&status=check&UUID_ROOM_BAR_KARAOKE='+this.room.UUID_ROOM_BAR_KARAOKE).then((response) => {
+             this.$http.get(this.$store.state.API_URL + 'check_booking?api_token='+this.$cookies.get('token')+'&status=check&UUID_ROOM_BAR_KARAOKE='+this.room.UUID_ROOM_BAR_KARAOKE).then((response) => {
                 this.user_booking = response.data.STATUS
                 // console.log(response.data)
             })
@@ -293,13 +272,12 @@ export default {
                 const time = new Date()
                 // time = moment(time).format('MMMM Do YYYY, h:mm:ss a')
                 // console.log(moment(time).format('YYYY-DD-MM, h:mm:ss'))
-                // data.append
                 data.append("DATE_BOOK",this.date)
                 data.append("TIME_START",this.time_start.hh+':'+this.time_start.mm+':00')
                 data.append("UUID_ROOM_BAR_KARAOKE",this.room.UUID_ROOM_BAR_KARAOKE)
                 data.append("UUID_BAR_KARAOKE",this.room.UUID_BAR_KARAOKE)
                 console.log(this.time_start,new Date().getUTCHours(), new Date().getTimezoneOffset())
-                // data.append("TIME_START",)
+                data.append("TIME_START",)
                 this.$http.post(this.$store.state.API_URL +'bookingmobile?api_token='+this.$cookies.get('token'),data).then((response) => {
                     console.log(response.data)
                     this.ApiGetBooking()
@@ -335,22 +313,6 @@ export default {
         api_view()
         {
             this.axios.get(this.$store.state.API_URL + 'room/'+this.$route.params.UUID_ROOM_BAR_KARAOKE+'/view')
-        },
-        api_get_booking(date)
-        {
-           
-            this.axios.get(this.$store.state.API_URL + 'get_booking?DATE_BOOK='+date).then((response) => {
-                console.log(response.data)
-                const date_book = []
-                response.data.forEach((book) => {
-                    date_book.push({
-                        name: book.DISPLAY_NAME,
-                        start: book.DATE_BOOK,
-                        end: book.DATE_BOOK
-                    })
-                })
-                this.events = date_book
-            })
         }
     },
     created()
@@ -364,18 +326,15 @@ export default {
         this.check_rating()
         this.api_view()
         const hour =  new Date().getHours() ;
-       
-        console.log(hour)
         const minutes =  new Date().getMinutes();
         const a =  new Date().getHours() <= 12 ? 'am' : 'pm';
         console.log(hour, minutes, a)
         this.time_start = {
-            hh: hour,
+            hh: hour < 10 ? '0'+hour : hour.toString(),
             mm: minutes.toString(),
             ss: "00"
             
         }
-        this.api_get_booking(new Date().toISOString().substr(0, 10))
         //  console.log(this.time_start)
     }
 }

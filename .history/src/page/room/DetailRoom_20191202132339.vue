@@ -364,7 +364,7 @@ export default {
         this.check_rating()
         this.api_view()
         const hour =  new Date().getHours() ;
-       
+        hour = hour < 10 ? '0'+hour : hour.toString()
         console.log(hour)
         const minutes =  new Date().getMinutes();
         const a =  new Date().getHours() <= 12 ? 'am' : 'pm';

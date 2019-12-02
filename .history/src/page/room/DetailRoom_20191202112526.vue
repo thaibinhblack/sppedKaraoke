@@ -22,18 +22,10 @@
             </v-col>
             <v-col cols="12" sm="8" md="7">
                 <h2>{{karaoke.NAME_BAR_KARAOKE}} - {{room.NAME_ROOM_BAR_KARAOKE}}   </h2>
-                <star-rating :inline="true" :star-size="15" :read-only="true" :show-rating="false" :rating="room.STAR_RATING"></star-rating> <small>({{room.NUMBER_RATED}}), {{room.VIEW_ROOM + 1}} lượt xem</small>
+                <star-rating :inline="true" :star-size="15" :read-only="true" :show-rating="false" :rating="room.STAR_RATING"></star-rating> <small>({{room.NUMBER_RATED}}), {{room.VIEW_ROOM}} lượt xem</small>
                 <p v-html="room.CONTENT"></p>
-                <v-sheet height="500">
-                    <v-calendar
-                    type="month"
-                    :now="today"
-                    :value="today"
-                    :events="events"
-                    ></v-calendar>
-                </v-sheet>
+                <fb-comment data-width="100%" width="100%" :url="$store.state.DOMAIN + $route.params.safeurrl +'/'+$route.params.name_room" />
             </v-col>
-            
             <v-col cols="12" sm="5" md="4" class="left-layout">
                 <v-card class="booking">
                     <v-card-title primary-title>
@@ -47,8 +39,7 @@
                                     <strong>{{attribute.NAME_ATTRIBUTE}}</strong>
                                     {{attribute.CONTENT_ATTRIBUTE}}
                                 </p>
-                                <v-row>
-                                     <v-col cols="12" sm="6">
+                                 <v-col cols="12" sm="7" md="8">
                                      <v-menu
                                         ref="menu1"
                                         v-model="menu1"
@@ -71,15 +62,8 @@
                                             ></v-text-field>
                                         </template>
                                         <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
-                                      
-
                                     </v-menu>
                                  </v-col>
-                                 <v-col cols="12" sm="6">
-                                   
-                                       <vue-timepicker v-model="time_start" format="hh:mm:ss" style="width:100%;margin-top:17px"></vue-timepicker>
-                                 </v-col>
-                                </v-row>
                                 <div v-if="$cookies.isKey('token')">
                                     <button v-if="user_booking == -1 || user_booking == 4" class="btn btn-booking" @click="bookingRoom()">Đặt phòng ngay</button>
                                     <button v-if="user_booking == 0 || user_booking == 1" class="btn btn-booking" @click="cancle()">Hủy đặt phòng</button>
@@ -121,14 +105,11 @@
 <script>
 import moment from 'moment'
 import { Hooper, Slide } from 'hooper';
-import VueTimepicker from 'vue2-timepicker'
-
 export default {
     components:{
         'header-tool-bar': () => import('@/components/header/ToolBar.vue'),
         'header-search': () => import('@/components/header/HeaderSearch.vue'),
-        Hooper, Slide,
-        VueTimepicker
+        Hooper, Slide 
     },
     data()
     {
@@ -159,24 +140,14 @@ export default {
             karaoke: {},
             attributes: [],
             booking: false,
+            TIME_START: null,
             message_booking: '',
             user_booking: -1,
             date: new Date().toISOString().substr(0, 10),
-            today: this.formatDate(new Date().toISOString().substr(0,10)),
             dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
             menu1: false,
             rating_room: 0,
-            check: true,
-            time_start: {
-               
-            },
-            events: [
-                {
-                name: 'Vacation',
-                start: '2018-12-30',
-                end: '2019-01-02',
-                },
-            ],
+            check: true
         }
     },
     computed: {
@@ -187,7 +158,6 @@ export default {
     watch: {
       date (val) {
         this.dateFormatted = this.formatDate(this.date)
-        
       },
       rating_room(newVal)
       {
@@ -195,12 +165,9 @@ export default {
           {
               if(this.$cookies.isKey('token'))
               {
-                  this.axios.get(this.$store.state.API_URL + 'room/'+this.$route.params.UUID_ROOM_BAR_KARAOKE+'/rating?api_token='+this.$cookies.get('token')+'&rating='+newVal)
+                  this.axios.post(this.$store.state.API_URL + 'room/'+his.$route.params.UUID_ROOM_BAR_KARAOKE+'/rating?api_token='+this.$cookies.get('token')+'&UUID_ROOM_BAR_KARAOKE='+this.$route.params.UUID_ROOM_BAR_KARAOKE)
                   .then((response) => {
-                      this.room.STAR_RATING = ((this.room.STAR_RATING * this.room.NUMBER_REATED ) + newVal) / (this.room.NUMBER_REATE +1)
-                      this.room.NUMBER_REATE = this.room.NUMBER_REATE +1 
-                      this.check = false
-                      alert('Cảm ơn bạn đã đánh giá phòng của chúng tôi')
+                      console.log(response.data)
                   })
               } 
               else
@@ -216,12 +183,6 @@ export default {
 
             const [year, month, day] = date.split('-')
             return `${day}/${month}/${year}`
-        },
-        formatDate_check (date) {
-            if (!date) return null
-
-            const [year, month, day] = date.split('-')
-            return `${year}/${month}/${day}`
         },
         parseDate (date) {
             if (!date) return null
@@ -274,15 +235,15 @@ export default {
         
         ApiGetBooking()
         {
-            this.$http.get(this.$store.state.API_URL + 'check_booking?api_token='+this.$cookies.get('token')+'&status=check&UUID_ROOM_BAR_KARAOKE='+this.room.UUID_ROOM_BAR_KARAOKE).then((response) => {
+             this.$http.get(this.$store.state.API_URL + 'check_booking?api_token='+this.$cookies.get('token')+'&status=check&UUID_ROOM_BAR_KARAOKE='+this.room.UUID_ROOM_BAR_KARAOKE).then((response) => {
                 this.user_booking = response.data.STATUS
                 // console.log(response.data)
             })
             
         },
-        bookingRoom()
+        async bookingRoom()
         {
-            // this.$store.state.loading = true
+            this.$store.state.loading = true
             if(!this.$cookies.isKey('token'))
             {
                 this.$router.push('/login')
@@ -292,21 +253,17 @@ export default {
                 const data = new FormData()
                 const time = new Date()
                 // time = moment(time).format('MMMM Do YYYY, h:mm:ss a')
-                // console.log(moment(time).format('YYYY-DD-MM, h:mm:ss'))
-                // data.append
-                data.append("DATE_BOOK",this.date)
-                data.append("TIME_START",this.time_start.hh+':'+this.time_start.mm+':00')
+                console.log(moment(time).format('YYYY-DD-MM, h:mm:ss'))
+                data.append("TIME_START",moment(time).format('YYYY-MM-DD h:mm:ss'))
                 data.append("UUID_ROOM_BAR_KARAOKE",this.room.UUID_ROOM_BAR_KARAOKE)
-                data.append("UUID_BAR_KARAOKE",this.room.UUID_BAR_KARAOKE)
-                console.log(this.time_start,new Date().getUTCHours(), new Date().getTimezoneOffset())
+                data.append("UUID_BAR_KARAOKE",this.karaoke.UUID_BAR_KARAOKE)
                 // data.append("TIME_START",)
-                this.$http.post(this.$store.state.API_URL +'bookingmobile?api_token='+this.$cookies.get('token'),data).then((response) => {
-                    console.log(response.data)
+                await this.$http.post(this.$store.state.API_URL +'booking?api_token='+this.$cookies.get('token'),data).then((response) => {
                     this.ApiGetBooking()
                     
                 })
             }
-            // this.$store.state.loading = false
+            this.$store.state.loading = false
             //  this.$socket.client.emit('emit_method', val);
             // this.$socket.client.emit('booking','hello booking')
             // this.$socket.emit('emit_method', data)
@@ -331,26 +288,6 @@ export default {
                     this.check = response.data.rating
                 })
             }
-        },
-        api_view()
-        {
-            this.axios.get(this.$store.state.API_URL + 'room/'+this.$route.params.UUID_ROOM_BAR_KARAOKE+'/view')
-        },
-        api_get_booking(date)
-        {
-           
-            this.axios.get(this.$store.state.API_URL + 'get_booking?DATE_BOOK='+date).then((response) => {
-                console.log(response.data)
-                const date_book = []
-                response.data.forEach((book) => {
-                    date_book.push({
-                        name: book.DISPLAY_NAME,
-                        start: book.DATE_BOOK,
-                        end: book.DATE_BOOK
-                    })
-                })
-                this.events = date_book
-            })
         }
     },
     created()
@@ -362,21 +299,6 @@ export default {
         this.ApiGetMedia(this.$route.params.UUID_ROOM_BAR_KARAOKE)
         this.ApiGetAttribute(this.$route.params.UUID_ROOM_BAR_KARAOKE)
         this.check_rating()
-        this.api_view()
-        const hour =  new Date().getHours() ;
-       
-        console.log(hour)
-        const minutes =  new Date().getMinutes();
-        const a =  new Date().getHours() <= 12 ? 'am' : 'pm';
-        console.log(hour, minutes, a)
-        this.time_start = {
-            hh: hour,
-            mm: minutes.toString(),
-            ss: "00"
-            
-        }
-        this.api_get_booking(new Date().toISOString().substr(0, 10))
-        //  console.log(this.time_start)
     }
 }
 </script>
