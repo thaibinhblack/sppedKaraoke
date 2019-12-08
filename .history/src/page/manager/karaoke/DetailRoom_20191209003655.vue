@@ -22,7 +22,7 @@
                         <v-card-title primary-title>
                             <v-row>
                                 <v-col cols="12" sm="12">
-                                    <span class="title-lable" style="font-size: 15px;">Thông tin chi tiết phòng <strong>{{room.NAME_ROOM_BAR_KARAOKE}}</strong> </span>
+                                    <span class="title-lable" style="font-size: 15px;">Form thông tin chi tiết phòng <strong>{{room.NAME_ROOM_BAR_KARAOKE}}</strong> </span>
                                 </v-col>
                             </v-row>
                             <v-card-text>
@@ -95,20 +95,12 @@
                                             required
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" sm="5" md="5">
-                                     
-                                         <v-radio-group v-model="room.NEW_ROOM" row >
-                                            <v-radio label="Phòng mới" :value="1"></v-radio>
-                                            <v-radio label="Phòng cũ" :value="0"></v-radio>
-                                        </v-radio-group>
-                                        <!-- <v-radio label="Phòng mới" v-model="room.NEW_ROOM" value="1"></v-radio> -->
-                                        <!-- <v-checkbox label="Phòng mới"  value="1"></v-checkbox> -->
+                                    <v-col cols="12" sm="4" md="3">
+                                        {{room.NEW_ROOM}}
+                                        <v-checkbox label="Phòng mới" v-model="room.NEW_ROOM" value="1"></v-checkbox>
                                     </v-col>
-                                     <v-col cols="12" sm="7" md="7">
-                                       <v-radio-group v-model="room.EVENT" row >
-                                            <v-radio label="Hỗ trợ tổ chức sự kiện" :value="1"></v-radio>
-                                            <v-radio label="Không hỗ trợ tổ chức sự kiện" :value="0"></v-radio>
-                                        </v-radio-group>
+                                     <v-col cols="12" sm="4" md="3">
+                                        <v-checkbox label="Hỗ trợ tổ chức event" v-model="room.EVENT" value="1"></v-checkbox>
                                     </v-col>
                                     <v-col cols="12" sm="12">
                                         <label class="title-lable" style="font-weight:bold;margin-bottom:15px;">Nội dung</label>
@@ -191,10 +183,6 @@ export default {
             }
             room.append("NAME_ROOM_BAR_KARAOKE",this.room.NAME_ROOM_BAR_KARAOKE)
             room.append("RENT_COST",this.room.RENT_COST)
-            room.append("CAPACITY",this.room.CAPACITY)
-            room.append("DESIGN",this.room.DESIGN)
-            room.append("EVENT",this.room.EVENT)
-            room.append("NEW_ROOM",this.room.NEW_ROOM)
             room.append("CONTENT",this.room.CONTENT)
             await this.$http.post(this.$store.state.API_URL + 'room/'+this.room.UUID_ROOM_BAR_KARAOKE+'?api_token='+this.$cookies.get('token'),room).then(() => {
                     this.message.type = 'success'

@@ -1,20 +1,20 @@
 <template>
     <div id="page-add-karaoke" style="padding:15px;">
         <v-row>
-            <v-col cols="12" sm="6" md="4">
-                THÔNG TIN CHI TIẾT {{karaoke.NAME_BAR_KARAOKE}}
+            <v-col cols="12" sm="4">
+                THÊM CHI NHÁNH MỚI
             </v-col>
             <v-col cols="12" sm="8" class="group-link">
                 <ul class="list-link">
                     <li><router-link to="/manager-karaoke/dashboard"><v-icon>mdi-view-dashboard</v-icon> Home</router-link></li>
                     <li><v-icon>mdi-chevron-right</v-icon></li>
-                    <li><router-link to="/manager-karaoke/karaoke">Danh sách karaoke</router-link></li>
+                    <li><router-link to="/manager-karaoke/karaoke"> Danh sách karaoke</router-link></li>
                     <li><v-icon>mdi-chevron-right</v-icon></li>
-                    <li>{{karaoke.NAME_BAR_KARAOKE}}</li>
+                    <li>Thêm mới</li>
                 </ul>
             </v-col>
-            <v-col cols="12" sm="12">
-                 <v-form @submit.prevent="updateKaraoke()" >
+            <v-col class="12" sm="12">
+                 <v-form @submit.prevent="createKaraoke()" >
                     <v-card>
                        
                         <v-card-title primary-title>
@@ -25,9 +25,8 @@
                                 {{message.text}}
                             </v-alert>
                             <v-row>
-                                 <v-col cols="12" sm="12" style="position:relative;">
+                                <v-col cols="12" sm="12" style="position:relative;">
                                     <v-img v-if="BANNER != null" :src="BANNER" width="100%" height="180px"></v-img>
-                                     <v-img v-else-if="karaoke.BANNER_BAR_KARAOKE != null" :src="$store.state.PUBLIC_URL + karaoke.BANNER_BAR_KARAOKE" width="100%" height="180px"></v-img>
                                     <v-img v-else src="http://placehold.it/300x180/" width="100%" height="180px"></v-img>
                                     <input class="upload-banner" type="file" ref="banner" @change="renderBanner()">
                                     <v-icon class="icon-upload" color="blue">mdi-upload</v-icon>
@@ -38,11 +37,10 @@
                                         color="#e2e2e2"
                                         class="logo-karaoke">
                                         <input type="file" ref="MyAvatar" class="input-logo" @change="renderLogo()"> 
-                                        <img v-if="karaoke.LOGO != null" :src="karaoke.LOGO" alt="alt">
-                                        <img v-else :src="$store.state.PUBLIC_URL + karaoke.LOGO_BAR_KARAOKE" alt="alt">
+                                        <img v-if="LOGO != null" :src="LOGO" alt="alt">
                                     </v-avatar>
                                 </v-col>
-                                <v-col cols="12" sm="6" md="4">
+                                <v-col class="12" sm="4">
                                     <v-text-field
                                         name="NAME_BAR_KARAOKE"
                                         label="TÊN CHI NHÁNH"
@@ -52,7 +50,7 @@
                                         v-model="karaoke.NAME_BAR_KARAOKE"
                                     ></v-text-field>
                                 </v-col>
-                                <v-col cols="12" sm="6" md="4">
+                                <v-col class="12" sm="4">
                                     <v-select
                                         :items="province"
                                         item-value="ID_PROVINCE"
@@ -63,7 +61,7 @@
                                         label="TỈNH / THÀNH PHỐ"
                                     ></v-select>
                                 </v-col>
-                                <v-col cols="12" sm="6" md="4">
+                                <v-col class="12" sm="4">
                                      <v-select
                                         :items="district"
                                         item-value="ID_DISTRICT"
@@ -73,7 +71,7 @@
                                         prepend-icon="mdi-map-marker"
                                     ></v-select>
                                 </v-col>
-                                <v-col cols="12" sm="6" md="4">
+                                <v-col class="12" sm="4">
                                     <v-text-field
                                         name="ADDRESS_BAR_KARAOKE"
                                         label="ĐỊA CHỈ CHI NHÁNH"
@@ -83,7 +81,7 @@
                                         v-model="karaoke.ADDRESS_BAR_KARAOKE"
                                     ></v-text-field>
                                 </v-col>
-                                <v-col cols="12" sm="6" md="4">
+                                <v-col class="12" sm="4">
                                     <v-text-field
                                         name="EMAIL"
                                         label="EMAIL CHI NHÁNH"
@@ -93,8 +91,7 @@
                                         v-model="karaoke.EMAIL_BAR_KARAOKE"
                                     ></v-text-field>
                                 </v-col>
-
-                                <v-col cols="12" sm="6" md="4">
+                                <v-col class="12" sm="4">
                                     <v-text-field
                                         name="PHONE"
                                         label="SỐ ĐIỆN THOẠI"
@@ -104,43 +101,21 @@
                                         v-model="karaoke.PHONE_BAR_KARAOKE"
                                     ></v-text-field>
                                 </v-col>
-                                <v-col cols="12" sm="6" md="4">
+                                <v-col class="12" sm="4">
                                     <v-text-field
-                                        name="MIN_RENT_COST"
+                                        name="RENT_COST_MIN"
                                         label="Tiền thuê phòng (min)"
                                         prepend-icon="mdi-currency-usd"
+                                        required
                                         v-model="karaoke.RENT_COST_MIN"
                                     ></v-text-field>
                                 </v-col>
-                                 <v-col cols="12" sm="6" md="4">
+                                 <v-col class="12" sm="4">
                                     <v-text-field
-                                        name="MIN_RENT_COST"
+                                        name="RENT_COST_MAX"
                                         label="Tiền thuê phòng (max)"
                                         prepend-icon="mdi-currency-usd"
                                         v-model="karaoke.RENT_COST_MAX"
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        name="PHONE"
-                                        label="RATING"
-                                        prepend-icon="mdi-star"
-                                        required
-                                        
-                                        value="0"
-                                        disabled
-                                        v-model="karaoke.STAR_RATING"
-                                    ></v-text-field>
-                                </v-col>
-                                 <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        name="PHONE"
-                                        label="SỐ LƯỢT ĐÁNH GIÁ"
-                                        prepend-icon="mdi-thumb-up"
-                                        required
-                                        value="0"
-                                        disabled
-                                        v-model="karaoke.NUMBER_REATED"
                                     ></v-text-field>
                                 </v-col>
                                 <v-col cols="12" sm="12">
@@ -152,69 +127,32 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-row>
-                                <v-col cols="12" sm="2">
-                                    <button class="btn-add" type="submit"><v-icon>mdi-update</v-icon> Cập nhật</button>
-                                </v-col>
-                                <v-col cols="12" sm="3">
-                                    <router-link class="btn btn-add" :to="'/map?karaoke='+karaoke.UUID_BAR_KARAOKE"><v-icon>mdi-map-marker</v-icon> Thêm địa chỉ trên bản đồ</router-link>
+                                <v-col cols="12" sm="12">
+                                    <button class="btn-add" type="submit"><v-icon>mdi-plus</v-icon> Lưu lại</button>
                                 </v-col>
                             </v-row>
                         </v-card-actions>
                     </v-card>
                  </v-form>
             </v-col>
-            <v-col cols="12" sm="12">
-                <v-card>
-                    <v-card-title primary-title>
-                        <span class="title-label">
-                            Danh sách nhân viên quản lý chi nhánh
-                        </span>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-data-table
-                            :headers="headers"
-                            :items="managers">
-                            <template v-slot:item.AVATAR ="{item}">
-                               <v-avatar
-                                   size="70"
-                                   color="#e2e2e2"
-                               >
-                                   <img v-if="item.AVATAR != null" :src="$store.state.PUBLIC_URL + item.AVATAR" alt="alt">
-                               </v-avatar>
-                            </template>
-                            <template v-slot:item.GENDER="{item}">
-                               <v-icon v-if="item.GENDER == 1">mdi-gender-male</v-icon>
-                               <v-icon v-else>mdi-female</v-icon>
-                            </template>
-                            <template v-slot:item.ACTION="{item}">
-                                <button><v-icon>mdi-delete</v-icon></button>
-                            </template>
-                        </v-data-table>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <list-room :NAME_BAR_KARAOKE="karaoke.NAME_BAR_KARAOKE" />
-           <media-karaoke :karaoke="true" />
         </v-row>
     </div>
 </template>
 
 <script>
-import { VueEditor } from "vue2-editor";
-import {mapActions} from 'vuex'
 import uuid from 'uuid'
 import UrlSafeString from 'url-safe-string'
+import { VueEditor } from "vue2-editor";
+import * as firebase from 'firebase'
 export default {
     components: {
-        VueEditor,
-        'list-room': () => import("@/components/manager/karaoke/ListRoomByKaraoke.vue"),
-        'media-karaoke': () => import("@/components/manager/karaoke/MediaKaraoke.vue")
+        VueEditor
     },
     data()
     {
         return {
             karaoke: {
-                LOGO: null,
+                
                 STAR_RATING: 0 ,
                 NUMBER_REATED: 0
             },
@@ -224,23 +162,11 @@ export default {
             },
             province : [],
             district: [],
-            headers: [
-                {text: 'Avatar', value: 'AVATAR',sortable: false},
-                {text: 'Tên người quản lý', value: 'DISPLAY_NAME'},
-                {text: 'Email', value: 'EMAIL'},
-                {text: 'SĐT', value: 'PHONE'},
-                {text: 'Giới tính', value: 'GENDER', sortable: false},
-                {text: 'Ngày sinh', value: 'BIRTH_DAY'},
-                {text: 'Tác vụ', value: 'ACTION', sortable: false}
-            ],
-            managers: [],
+            LOGO: null,
             BANNER: null
-           
-            
         }
     },
     methods:{
-        ...mapActions(["commitBarKaraoke"]),
         renderBanner()
         {
             var reader  = new FileReader()
@@ -253,48 +179,44 @@ export default {
             var reader  = new FileReader()
             const file = this.$refs.MyAvatar.files[0]
             this.karaoke.LOGO_BAR_KARAOKE = file
-            this.karaoke.LOGO  = URL.createObjectURL(file)
-            console.log(this.karaoke.LOGO)
+            this.LOGO  = URL.createObjectURL(file)
             // console.log(file)
         },
-        async updateKaraoke()
+        async createKaraoke()
         {
+         
             this.$store.state.loading = true
+            this.karaoke.UUID_BAR_KARAOKE = uuid.v4()
             const data = new FormData()
             data.append("UUID_BAR_KARAOKE",this.karaoke.UUID_BAR_KARAOKE)
             data.append("ID_DISTRICT", this.karaoke.ID_DISTRICT)
             data.append("ID_PROVINCE", this.karaoke.ID_PROVINCE)
-            if(this.karaoke.LOGO != null)
-            {
-                 data.append("LOGO_BAR_KARAOKE",this.karaoke.LOGO_BAR_KARAOKE)
-            }
-            if(this.BANNER != null)
-            {
-                data.append("BANNER_BAR_KARAOKE",this.karaoke.BANNER_BAR_KARAOKE)
-            }
+            data.append("BANNER_BAR_KARAOKE",this.karaoke.BANNER_BAR_KARAOKE)
+            data.append("LOGO_BAR_KARAOKE",this.karaoke.LOGO_BAR_KARAOKE)
             data.append("NAME_BAR_KARAOKE", this.karaoke.NAME_BAR_KARAOKE)
             data.append("ADDRESS_BAR_KARAOKE", this.karaoke.ADDRESS_BAR_KARAOKE)
             data.append("EMAIL_BAR_KARAOKE",this.karaoke.EMAIL_BAR_KARAOKE)
             data.append("PHONE_BAR_KARAOKE", this.karaoke.PHONE_BAR_KARAOKE)
-            data.append("USER_CREATE", this.karaoke.USER_CREATE)
-            data.append("STAR_RATING", this.karaoke.STAR_RATING)
-            data.append("NUMBER_REATED", this.karaoke.NUMBER_REATED)
+            data.append("RENT_COST_MAX", this.karaoke.RENT_COST_MAX)
+            data.append("RENT_COST_MIN", this.karaoke.RENT_COST_MIN)
             data.append("CONTENT_BAR_KARAOKE",this.karaoke.CONTENT_BAR_KARAOKE)
-            data.append("RENT_COST_MIN",this.karaoke.RENT_COST_MIN)
-            data.append("RENT_COST_MAX",this.karaoke.RENT_COST_MAX)
             const tagGenerator  = new UrlSafeString();
             data.append("URL_SAFE", tagGenerator.generate(this.karaoke.NAME_BAR_KARAOKE))
             // console.log(this.karaoke)
-            await this.$http.post(this.$store.state.API_URL + 'karaoke/'+this.$route.params.uuid+'/update?api_token='+this.$cookies.get('token'),data)
-            .then((response) => {  
+            await this.$http.post(this.$store.state.API_URL + 'karaoke?api_token='+this.$cookies.get('token'),data,)
+            .then((response) => {
                 this.message.type = 'success'
                 this.message.text = 'Thêm chi nhánh mới thành công!'
-            }).catch(() => {
-                // console.log(error)
-               
+                this.karaoke = {
+                    STAR_RATING: 0 ,
+                    NUMBER_REATED: 0
+                }
+                this.LOGO = null
+                console.log(response.data)
+            }).catch((error) => {
+                console.log(error)
                 this.message.type = 'error'
                 this.message.text = 'Lôi! xin vui lòng thử lại!'
-                this.$store.state.loading = false
             })
             this.$store.state.loading = false
            
@@ -311,29 +233,13 @@ export default {
                 this.district = response.data
             })
         },
-        ApiGetKaraoke()
-        {
-            this.$http.get(this.$store.state.API_URL + 'karaoke/'+this.$route.params.uuid).then((response) => {
-                this.karaoke = response.data
-                this.commitBarKaraoke(response.data)
-                this.ApiGetDistrict()
-            })
-        },
        
-        ApiGetManager()
-        {
-            this.$http.get(this.$store.state.API_URL + 'manager/'+this.$route.params.uuid+'?api_token='+this.$cookies.get('token')).then((response) => {
-                this.managers = response.data
-                console.log(response.data)
-            })
-        }
     },
-    created()
+    async created()
     {
-        this.ApiGetProvince()
-        this.ApiGetKaraoke()
-        this.ApiGetManager()
-       
+        this.$store.state.loading = true
+        await this.ApiGetProvince()
+        this.$store.state.loading = false
     }
 }
 </script>

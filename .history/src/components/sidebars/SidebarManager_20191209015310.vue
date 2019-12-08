@@ -67,7 +67,7 @@
                 <v-list-group>
                     <template v-slot:activator>
                         <v-list-item-icon><v-icon>mdi-account</v-icon></v-list-item-icon>
-                        <v-list-item-title class="title-menu">Quản lí nhân viên</v-list-item-title>
+                        <v-list-item-title class="title-menu"Quản lý nhân viên</v-list-item-title>
                     </template>
                     <v-list-item link to="/manager-karaoke/users">
                         <v-list-item-icon></v-list-item-icon>
@@ -85,7 +85,7 @@
                 <v-list-group>
                     <template v-slot:activator>
                         <v-list-item-icon><v-icon>mdi-calendar-check-outline</v-icon></v-list-item-icon>
-                        <v-list-item-title class="title-menu">Quản lí khuyến mãi</v-list-item-title>
+                        <v-list-item-title>Quản lý khuyến mãi</v-list-item-title>
                     </template>
                     <v-list-item to="/manager-karaoke/promotion">
                         <v-list-item-icon></v-list-item-icon>

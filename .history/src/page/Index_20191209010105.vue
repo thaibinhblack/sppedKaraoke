@@ -224,6 +224,6 @@ a:hover {text-decoration: none}
 .image-karaoke-province {border: 1px solid #e2e2e2;border-radius: 5px;}
 .content-karaoke-province {position: absolute;bottom: 0;left: 0;width: 100%;padding: 15px}
 .content-karaoke-province * {color: #fff;margin: 0 !important}
-.item-karaoke {border: 1px solid #e2e2e2;border-radius: 5px;height: 365px !important;box-shadow: 4px 3px 2px -1px #e2e2e2}
+.item-karaoke {border: 1px solid #e2e2e2;border-radius: 5px;height: 365px !important;}
 </style>
 

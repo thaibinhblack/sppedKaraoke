@@ -22,7 +22,7 @@
                         <v-card-title primary-title>
                             <v-row>
                                 <v-col cols="12" sm="12">
-                                    <span class="title-lable" style="font-size: 15px;">Thông tin chi tiết phòng <strong>{{room.NAME_ROOM_BAR_KARAOKE}}</strong> </span>
+                                    <span class="title-lable" style="font-size: 15px;">Form thông tin chi tiết phòng <strong>{{room.NAME_ROOM_BAR_KARAOKE}}</strong> </span>
                                 </v-col>
                             </v-row>
                             <v-card-text>
@@ -191,10 +191,6 @@ export default {
             }
             room.append("NAME_ROOM_BAR_KARAOKE",this.room.NAME_ROOM_BAR_KARAOKE)
             room.append("RENT_COST",this.room.RENT_COST)
-            room.append("CAPACITY",this.room.CAPACITY)
-            room.append("DESIGN",this.room.DESIGN)
-            room.append("EVENT",this.room.EVENT)
-            room.append("NEW_ROOM",this.room.NEW_ROOM)
             room.append("CONTENT",this.room.CONTENT)
             await this.$http.post(this.$store.state.API_URL + 'room/'+this.room.UUID_ROOM_BAR_KARAOKE+'?api_token='+this.$cookies.get('token'),room).then(() => {
                     this.message.type = 'success'

@@ -22,7 +22,7 @@
                         <v-card-title primary-title>
                             <v-row>
                                 <v-col cols="12" sm="12">
-                                    <span class="title-lable" style="font-size: 15px;">Thông tin chi tiết phòng <strong>{{room.NAME_ROOM_BAR_KARAOKE}}</strong> </span>
+                                    <span class="title-lable" style="font-size: 15px;">Form thông tin chi tiết phòng <strong>{{room.NAME_ROOM_BAR_KARAOKE}}</strong> </span>
                                 </v-col>
                             </v-row>
                             <v-card-text>

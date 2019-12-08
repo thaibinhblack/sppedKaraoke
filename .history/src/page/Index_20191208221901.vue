@@ -6,7 +6,7 @@
             <v-row>
                  <v-col cols="12" sm="12">
                     <h3><strong>Hôm nay có khuyến mãi gì?</strong></h3>
-                    <span>Chỉ có tại <strong>Speed Karaoke</strong> , đặt phòng ngay để được ưu đãi hấp dẫn!</span>
+                    <span>Chỉ có tại speed karaoke, book ngay để được ưu đãi hấp dẫn!</span>
                 </v-col>
                 <hooper  height="180px" :settings="hooperPrômtion" :itemsToShow="3">
                         <slide height="180px" v-for="(promotion,index) in promotions" :key="index">
@@ -67,6 +67,7 @@
          <v-overlay :value="$store.state.loading" style="color:#fff !important;">
             <v-progress-circular indeterminate size="32" style="color:#fff;"></v-progress-circular>
         </v-overlay>
+        <chat />
     </div>
 </template>
 
@@ -213,7 +214,6 @@ export default {
 h3 {font-size: 22px;}
 #index {background: #ffffff;}
 a {text-decoration: none;color: #333 !important;}
-a:hover {text-decoration: none}
 .container.custom {padding: 10px 15px;}
 .bg-event-karaoke {width: 100%;height: 183px;background-size: cover;background-position: 50%;}
 .content-top.title p{font-size: 15px;text-align: justify;line-height: 17px;margin-top: 15px;}
@@ -221,9 +221,7 @@ a:hover {text-decoration: none}
 .content-main:hover p {color: #f65e39;font-size: 16px}
 .slider {height: 375px !important;outline: none;}
 .item-karaoke-province {position: relative;padding: 7px;}
-.image-karaoke-province {border: 1px solid #e2e2e2;border-radius: 5px;}
 .content-karaoke-province {position: absolute;bottom: 0;left: 0;width: 100%;padding: 15px}
 .content-karaoke-province * {color: #fff;margin: 0 !important}
-.item-karaoke {border: 1px solid #e2e2e2;border-radius: 5px;height: 365px !important;box-shadow: 4px 3px 2px -1px #e2e2e2}
 </style>
 
