@@ -19,7 +19,7 @@
     "esri-loader": "^2.10.1",
     "firebase": "^7.1.0",
     "hooper": "^0.3.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "postcss-loader": "^3.0.0",
     "style-loader": "^1.0.0",
